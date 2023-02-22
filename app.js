@@ -5,6 +5,8 @@ const helmet = require('helmet');
 const mongose = require('mongoose');
 const route = require('./routes/tourroute');
 const users = require('./routes/userroutes');
+const BookingRoutes = require('./routes/bookingroutes');
+
 const revs=require('./routes/reviewRoutes');
 const Apperror = require('./utils/apperror');
 const senitize = require('express-mongo-sanitize');
@@ -36,10 +38,7 @@ app.use(cookieparser());
 app.use(senitize());
 app.use(express.json());
 //middleware
-app.use((req, res, next) => {
-  console.log('Hello from the middleware 👋 from the app.js');
-  next();
-});
+
 //routes
 app.use(
 helmet({
@@ -51,6 +50,8 @@ app.use('/', viewRoute);
 app.use('/api/v1/tours',route);
 app.use('/api/v1/user', users);
 app.use('/api/v1/review',revs);
+app.use('/api/v1/booking',BookingRoutes);
+
 
 app.all('*', (req, res, next) => {
   next(new Apperror(`Can't find ${req.originalUrl} on this server!`, 404));

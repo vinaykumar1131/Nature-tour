@@ -9,7 +9,7 @@ routes.route('/forgotpassword').post(AuthControl.forgotpassword);
 routes.route('/resetPassword/:token').patch(AuthControl.resetPassword);
 routes.use(AuthControl.protect)
 routes.route('/updatepass').patch(AuthControl.updatepassword);
-routes.route('/updateme').patch(AuthControl.updateme);
+routes.route('/updateme').patch(userControl.userPhoto, userControl.resizephoto,userControl.updateme);
 routes.route('/deleteme').delete(userControl.deleteme);
 routes.route('/alluser').get(userControl.getuser)
  routes.route('/getme').get(userControl.getme,userControl.getoneuser)

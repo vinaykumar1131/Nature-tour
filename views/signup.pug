@@ -1,0 +1,20 @@
+extends base
+block content
+  main.main
+    .login-form
+      h2.heading-secondary.ma-bt-lg SignUp YourSefl
+      form.form.form--signup
+        .form__group
+          label.form__label(for='UserName') User Name
+          input#UserName.form__input(type='text', placeholder='UserName', required)
+        .form__group.ma-bt-md
+          label.form__label(for='passwords') Password
+          input#passwords.form__input(type='password', placeholder='••••••••', required, minlength='8')
+        .form__group.ma-bt-md
+          label.form__label ConformPassword
+          input#ConformPassword.form__input(type='password', placeholder='••••••••', required, minlength='8')
+        .form__group.ma-bt-md
+          label.form__label Email
+          input#Emails.form__input(type='email', placeholder='vinayk1131@gmail.com', required, )
+        .form__group
+          button.btn.btn--green Signup

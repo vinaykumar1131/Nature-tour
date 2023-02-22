@@ -26,7 +26,11 @@ exports.getTour=catchasnc(async (req,res,next)=>{
 exports.LoginUser=catchasnc(async (req,res,next)=>{
   res.status(200).render('login')
 })
+exports.signuser=catchasnc(async (req,res,next)=>{
+  res.status(200).render('signup')
+})
 exports.getaccount=(req,res)=>{
+  console.log("i call the get me")
   res.status(200).render('accounttemplate',{
     title:"Your Account"
   })

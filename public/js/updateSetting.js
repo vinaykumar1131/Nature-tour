@@ -12,6 +12,6 @@ export const updateset=async (data,type)=>{
     if(res.data.status==='Success')
     console.log("Yes data is updated");
 }catch(err){
-    console.log(err.response.data);
+    console.log("some erroe")
 }
 }

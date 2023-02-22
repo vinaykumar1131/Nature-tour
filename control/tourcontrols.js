@@ -1,8 +1,8 @@
 const mytour = require('../models/model');
 const catchasnc = require('../utils/catcherror');
-const Apperror=require('../utils/apperror');
-const handlefactory=require('./handlefactory');
-exports.updattour =handlefactory.UpdateOne(mytour);
+const Apperror = require('../utils/apperror');
+const handlefactory = require('./handlefactory');
+exports.updattour = handlefactory.UpdateOne(mytour);
 //  catchasnc(async (req, res,next) => {
 //     const upd = await mytour.findByIdAndUpdate(req.params.id, req.body, {
 //         new: true
@@ -17,7 +17,7 @@ exports.updattour =handlefactory.UpdateOne(mytour);
 //         }
 //     });
 // });
-exports.getstats = catchasnc(async (req, res,next) => {
+exports.getstats = catchasnc(async (req, res, next) => {
     const stats = await mytour.aggregate([
         {
             $match: {
@@ -50,60 +50,55 @@ exports.getstats = catchasnc(async (req, res,next) => {
         }
     });
 })
-exports.tourWithindis=catchasnc(async (req, res,next) => {
-    const {distance,latlng,unit}=req.params;
-  
-    const [lat,lng]=latlng.split(',');
-    const radius=unit==='mi'? distance / 3963.2 : distance / 6378.1;
-    if(!lat|| !lng)
-    { 
-        return next(new Apperror('Please provide latitutr and longitude in the format lat,lng.',400 ));
+exports.tourWithindis = catchasnc(async (req, res, next) => {
+    const { distance, latlng, unit } = req.params;
+
+    const [lat, lng] = latlng.split(',');
+    const radius = unit === 'mi' ? distance / 3963.2 : distance / 6378.1;
+    if (!lat || !lng) {
+        return next(new Apperror('Please provide latitutr and longitude in the format lat,lng.', 400));
     }
 
-    const ttt = await mytour.find({ startLocation:{$geoWithin:{$centerSphere:[[lng,lat],radius]}}});
+    const ttt = await mytour.find({ startLocation: { $geoWithin: { $centerSphere: [[lng, lat], radius] } } });
     res.status(200).json({
-        status:"Success",
-        length:ttt.length,
-        data:ttt
+        status: "Success",
+        length: ttt.length,
+        data: ttt
     })
 
 })
 
-exports.getdistances=catchasnc(async(req,res,next)=>{
-    console.log("we hit the route");
+exports.getdistances = catchasnc(async (req, res, next) => {
 
-    const {latlan,unit}=req.params;
-    console.log(latlan,unit)
-    const[lat,lan]=latlan.split(',');
-    console.log(lat,lan)
-  const multiplier = unit === 'mi' ? 0.000621371 : 0.001;
+    const { latlan, unit } = req.params;
+    const [lat, lan] = latlan.split(',');
+    const multiplier = unit === 'mi' ? 0.000621371 : 0.001;
 
-    if(!lat|| !lan)
-    { 
-        return next(new Apperror('Please provide latitutr and longitude in the format lat,lng.',400 ));
+    if (!lat || !lan) {
+        return next(new Apperror('Please provide latitutr and longitude in the format lat,lng.', 400));
     }
-    const distance=await mytour.aggregate([
+    const distance = await mytour.aggregate([
         {
-            $geoNear:{
-                near:{
-                type:'Point',
-                coordinates:[lan*1,lat*1]
+            $geoNear: {
+                near: {
+                    type: 'Point',
+                    coordinates: [lan * 1, lat * 1]
                 },
-                distanceField:'distance',
-                 distanceMultiplier:multiplier
+                distanceField: 'distance',
+                distanceMultiplier: multiplier
             }
 
-        },{
-            $project:{
-                distance:1,
-                name:1
+        }, {
+            $project: {
+                distance: 1,
+                name: 1
             }
         }
     ])
     res.status(200).json({
-        status:"Success",
-        len:distance.length,
-        data:distance
+        status: "Success",
+        len: distance.length,
+        data: distance
     })
 
 })
@@ -136,8 +131,8 @@ exports.getyear = catchasnc(async (req, res) => {
         }
     }
     ])
-    if(!years){
-        return new Apperror("no year is find ",404);
+    if (!years) {
+        return new Apperror("no year is find ", 404);
     }
     res.status(200).json({
         status: "Success",
@@ -148,5 +143,5 @@ exports.getyear = catchasnc(async (req, res) => {
 });
 exports.posttour = handlefactory.createone(mytour)
 exports.deleteTour = handlefactory.deleteone(mytour);
-exports.getonetour =handlefactory.getone(mytour,{path:'review'})
+exports.getonetour = handlefactory.getone(mytour, { path: 'review' })
 exports.gettour = handlefactory.getall(mytour);
